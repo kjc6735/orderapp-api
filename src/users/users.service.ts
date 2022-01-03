@@ -15,6 +15,7 @@ export class UsersService {
   ) {}
 
   async login(businessNumber, password) {
+    console.log(businessNumber, password);
     const user = await this.userRepository.findOne({
       where: {
         businessNumber,
@@ -28,45 +29,42 @@ export class UsersService {
   }
 
   async register(newUser: CreateUserDto): Promise<boolean | Error> {
-    const group = await this.groupRepository.findOne({ where: { id: 1 } });
-    const queryRunner = this.connection.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
+    const isUser = await this.userRepository.findOne({
+      where: {
+        businessNumber: newUser.businessNumber,
+      },
+    });
+    if (isUser) throw new ForbiddenException('이미 가입된 아이디입니다.');
+
+    const group = await this.groupRepository.findOne({
+      where: { id: newUser.groupId },
+    });
+    // const queryRunner = this.connection.createQueryRunner();
+    // await queryRunner.connect();
+    // await queryRunner.startTransaction();
     const user = new User();
 
-    const password = await bcrypt.hash('1234', 12);
-    user.name = 'jaechan';
-    user.businessNumber = '123456789';
+    const password = await bcrypt.hash(newUser.password, 12);
+    user.name = newUser.name;
+    user.businessNumber = newUser.businessNumber;
     user.password = password;
+    user.phone = newUser.phone;
     user.group = group;
     try {
       await this.userRepository.save(user);
-      await queryRunner.commitTransaction();
+
+      //레포지토리에 저장할때 트랜젝션 자동 적용됨
+      //await queryRunner.commitTransaction();
       return true;
     } catch (e) {
-      await queryRunner.rollbackTransaction();
+      //await queryRunner.rollbackTransaction();
 
       throw new ForbiddenException('회원가입 실패');
     } finally {
-      await queryRunner.release();
+      //await queryRunner.release();
     }
   }
 
-  // async register1() {
-  //   const group = await this.groupRepository.findOne({ where: { id: 1 } });
-  //   const user = new User();
-  //   user.email = 'jaechan@wocks.me';
-  //   user.name = 'jaechan';
-  //   user.businessNumber = '123456789';
-  //   user.password = '1234';
-  //   user.group = group;
-  //   try {
-  //     await this.userRepository.save(user);
-  //     return true;
-  //   } catch (e) {
-  //     throw new ForbiddenException('저장에 실패했습니다');
-  //   }
-  // }
   async getUser(id) {
     const { password, ...result } = await this.userRepository.findOne(id);
     return result;

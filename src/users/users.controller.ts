@@ -13,7 +13,6 @@ import {
   Session,
   UseGuards,
 } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
 
 @Controller('users')
 export class UsersController {
@@ -25,7 +24,7 @@ export class UsersController {
   }
 
   @UseGuards(NotLoggedInGuard)
-  @Post('/login')
+  @Post('login')
   async login(
     @Body('businessNumber') businessNumber,
     @Body('password') password,

@@ -17,7 +17,7 @@ export const config: TypeOrmModuleOptions = {
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_DATABASE,
   entities: [User, Group, Product, Category, GroupProduct, Order, OrderDetail], // 설정 부분
-  synchronize: true,
+  synchronize: false,
   logging: true,
   autoLoadEntities: true,
   charset: 'utf8mb4',
