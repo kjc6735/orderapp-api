@@ -25,6 +25,9 @@ export class Product {
   })
   name: string;
 
+  @Column('int', { name: 'categtoryId' })
+  categoryId: number;
+
   @Column('varchar', { name: 'origin', length: 50, nullable: false })
   origin: string;
 

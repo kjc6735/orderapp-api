@@ -31,9 +31,11 @@ export class UsersController {
     @Session() session: Record<string, any>,
   ) {
     const result = await this.usersService.login(businessNumber, password);
+    console.log(result);
     if (result) {
       session.login = true;
-      session.user = result.id;
+      session.user = result;
+
       return true;
     } else {
       throw new ForbiddenException('error');

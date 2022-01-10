@@ -20,6 +20,9 @@ export class Order extends BaseEntity {
   @Column('int', { name: 'price', nullable: false })
   price: number;
 
+  @Column('int', { name: 'userId', nullable: false })
+  userId: number;
+
   @Column('varchar', {
     name: 'orderNumber',
     unique: true,
@@ -36,6 +39,6 @@ export class Order extends BaseEntity {
   @JoinColumn([{ name: 'userId', referencedColumnName: 'id' }])
   user: User;
 
-  @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.orderNumber2)
+  @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.order)
   orderDetails: OrderDetail[];
 }

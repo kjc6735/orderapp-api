@@ -25,7 +25,10 @@ export class UsersService {
     if (!bcrypt.compare(password, user.password))
       throw new ForbiddenException('입력하신 정보를 다시 확인해주세요.');
     await delete user.password;
-    return { id: user.id };
+    return {
+      id: user.id,
+      groupId: user.groupId,
+    };
   }
 
   async register(newUser: CreateUserDto): Promise<boolean | Error> {

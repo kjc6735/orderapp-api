@@ -34,6 +34,9 @@ export class User extends BaseEntity {
   @Column('varchar', { name: 'password', length: 200, nullable: false })
   password: string;
 
+  @Column('int', { name: 'groupId', nullable: false })
+  groupId: number;
+
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];
 

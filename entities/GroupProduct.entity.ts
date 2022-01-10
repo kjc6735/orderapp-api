@@ -22,6 +22,12 @@ export class GroupProduct {
   @Column({ type: 'boolean', name: 'status', nullable: false })
   status: boolean;
 
+  @Column('int', { name: 'productId', nullable: false })
+  productId: number;
+
+  @Column('int', { name: 'groupId', nullable: false })
+  groupId: number;
+
   @ManyToOne(() => Product, (product) => product.groupProducts, {
     nullable: false,
     onDelete: 'NO ACTION',

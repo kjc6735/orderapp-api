@@ -5,15 +5,16 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Product } from './Product.entity';
 import { Order } from './Order.entity';
 
-@Index('orderNumber', ['orderNumber'], {})
+@Index('orderId', ['orderId'], {})
 @Index('productId', ['productId'], {})
 @Entity('order_detail', { schema: 'api_server' })
 export class OrderDetail {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
   @Column('int', { name: 'count', nullable: false })
   count: number;
@@ -24,8 +25,8 @@ export class OrderDetail {
   @Column('int', { name: 'productId', nullable: false })
   productId: number;
 
-  @Column('varchar', { name: 'orderNumber', length: 13, nullable: false })
-  orderNumber: string;
+  @Column('int', { name: 'orderId', nullable: false })
+  orderId: number;
 
   @ManyToOne(() => Product, (product) => product.orderDetails, {
     nullable: false,
@@ -40,6 +41,6 @@ export class OrderDetail {
     onDelete: 'NO ACTION',
     onUpdate: 'NO ACTION',
   })
-  @JoinColumn([{ name: 'orderNumber', referencedColumnName: 'orderNumber' }])
-  orderNumber2: Order;
+  @JoinColumn([{ name: 'orderId', referencedColumnName: 'id' }])
+  order: Order;
 }
