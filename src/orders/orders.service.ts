@@ -49,6 +49,8 @@ export class OrdersService {
       { id: 1, count: 1 },
       { id: 2, count: 3 },
       { id: 7, count: 4 },
+      { id: 7, count: 4 },
+
     ];
 
     const idCol = test.map((item) => item.id);
